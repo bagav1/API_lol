@@ -4,14 +4,14 @@ const cors = require('cors');
 const env = require('./environment');
 const app = express();
 
-app.use(cors({origin: env.FRONT_URL}));
+app.use(cors({ origin: env.FRONT_URL }));
 
-app.get('/version_lol', function(req, res) {
+app.get('/version_lol', function (req, res) {
     request(
-        env.version_lol, 
+        env.version_lol,
         { json: true },
         (err, resp, body) => {
-            if (err) { 
+            if (err) {
                 return res.send(err);
             }
             return res.send(body);
@@ -19,12 +19,18 @@ app.get('/version_lol', function(req, res) {
     );
 });
 
-app.get('/queue', function(req, res) {
+app.get('/entire_league', function (req, res) {
     request(
-        env.queue, 
-        { json: true },
+        env.entire_league + req.query.q + '/' + req.query.t + '/' + req.query.d + '?page=1',
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
+            }
+        },
         (err, resp, body) => {
-            if (err) { 
+            if (err) {
                 return res.send(err);
             }
             return res.send(body);
@@ -32,100 +38,160 @@ app.get('/queue', function(req, res) {
     );
 });
 
-app.get('/summoner_data/:name', function(req, res) {
+app.get('/summoner_league', function (req, res) {
     request(
-        env.summoner_data + req.params.name, 
-        {json: true,
-         headers: {
-            'X-Riot-Token': env.riot_token,
-            'Content-Type':'text/plain'
-        }},
+        env.summoner_league + req.query.id,
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
+            }
+        },
         (err, resp, body) => {
-            if (err) { 
+            if (err) {
                 return res.send(err);
             }
-        return res.send(body);
+            return res.send(body);
         }
     );
 });
 
-app.get('/match_list/:puuid', function(req, res) {
+app.get('/summoner_data/:name', function (req, res) {
     request(
-        env.match_list + req.params.puuid + '/ids', 
-        {json: true,
-         headers: {
-            'X-Riot-Token': env.riot_token,
-            'Content-Type':'text/plain'
-        }},
+        env.summoner_data + req.params.name,
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
+            }
+        },
         (err, resp, body) => {
-            if (err) { 
+            if (err) {
                 return res.send(err);
             }
-        return res.send(body);
+            return res.send(body);
         }
     );
 });
 
-app.get('/match_id/:id', function(req, res) {
+app.get('/summoner_data_id/:id', function (req, res) {
     request(
-        env.match_id + req.params.id, 
-        {json: true,
-         headers: {
-            'X-Riot-Token': env.riot_token,
-            'Content-Type':'text/plain'
-        }},
+        env.summoner_data_id + req.params.id,
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
+            }
+        },
         (err, resp, body) => {
-            if (err) { 
+            if (err) {
                 return res.send(err);
             }
-        return res.send(body);
+            return res.send(body);
         }
     );
 });
 
-app.get('/rotation_champ', function(req, res) {
+app.get('/match_list/:p/:c', function (req, res) {
+    if(!req.query.q && !req.query.t){
+        var link = env.match_list + req.params.p + '/ids?count=' + req.params.c;
+    }else if(req.query.q && !req.query.t){
+        var link = env.match_list + req.params.p + '/ids?queue=' + req.query.q + '&count=' + req.params.c;
+    }else if(!req.query.q && req.query.t){
+        var link = env.match_list + req.params.p + '/ids?type=' + req.query.t + '&count=' + req.params.c;
+    }else{
+        var link = env.match_list + req.params.p + '/ids?queue=' + req.query.q + '&type=' + req.query.t + '&count=' + req.params.c;
+    };
     request(
-        env.rotation_champ, 
-        {json: true,
-         headers: {
-            'X-Riot-Token': env.riot_token,
-            'Content-Type':'text/plain'
-        }},
+        link,
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
+            }
+        },
         (err, resp, body) => {
-            if (err) { 
+            if (err) {
                 return res.send(err);
             }
-        return res.send(body);
+            return res.send(body);
         }
     );
 });
 
-app.get('/all_champs', function(req, res) {
+app.get('/match/:id', function (req, res) {
+    request(
+        env.match + req.params.id,
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
+            }
+        },
+        (err, resp, body) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.send(body);
+        }
+    );
+});
+
+app.get('/match_timeline/:id', function (req, res) {
+    request(
+        env.match_timeline + req.params.id + '/timeline',
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
+            }
+        },
+        (err, resp, body) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.send(body);
+        }
+    );
+});
+
+app.get('/rotation_champ', function (req, res) {
+    request(
+        env.rotation_champ,
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
+            }
+        },
+        (err, resp, body) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.send(body);
+        }
+    );
+});
+
+app.get('/all_champs', function (req, res) {
     request(
         env.all_champs,
-        {json: true,
-         headers: {
-            'X-Riot-Token': env.riot_token,
-            'Content-Type':'text/plain'
-        }},
-        (err, resp, body) => {
-            if (err) { 
-                return res.send(err);
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
             }
-        return res.send(body);
-        }
-    );
-});
-
-app.get('/champ/:name', function(req, res) {
-    request(
-        env.champ + req.params.name + '.json', 
-        {json: true,
-         headers: {
-            'X-Riot-Token': env.riot_token
-        }},
+        },
         (err, resp, body) => {
-            if (err) { 
+            if (err) {
                 return res.send(err);
             }
             return res.send(body);
@@ -133,53 +199,77 @@ app.get('/champ/:name', function(req, res) {
     );
 });
 
-app.get('/items', function(req, res) {
+app.get('/champ/:name', function (req, res) {
+    request(
+        env.champ + req.params.name + '.json',
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token
+            }
+        },
+        (err, resp, body) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.send(body);
+        }
+    );
+});
+
+app.get('/items', function (req, res) {
     request(
         env.items,
-        {json: true,
-         headers: {
-            'X-Riot-Token': env.riot_token,
-            'Content-Type':'text/plain'
-        }},
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
+            }
+        },
         (err, resp, body) => {
-            if (err) { 
+            if (err) {
                 return res.send(err);
             }
-        return res.send(body);
+            return res.send(body);
         }
     );
 });
 
-app.get('/summoner_spell', function(req, res) {
+app.get('/summoner_spell', function (req, res) {
     request(
         env.summoner_spell,
-        {json: true,
-         headers: {
-            'X-Riot-Token': env.riot_token,
-            'Content-Type':'text/plain'
-        }},
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
+            }
+        },
         (err, resp, body) => {
-            if (err) { 
+            if (err) {
                 return res.send(err);
             }
-        return res.send(body);
+            return res.send(body);
         }
     );
 });
 
-app.get('/profile_icon', function(req, res) {
+app.get('/profile_icon', function (req, res) {
     request(
         env.profile_icon,
-        {json: true,
-         headers: {
-            'X-Riot-Token': env.riot_token,
-            'Content-Type':'text/plain'
-        }},
+        {
+            json: true,
+            headers: {
+                'X-Riot-Token': env.riot_token,
+                'Content-Type': 'text/plain'
+            }
+        },
         (err, resp, body) => {
-            if (err) { 
+            if (err) {
                 return res.send(err);
             }
-        return res.send(body);
+            return res.send(body);
         }
     );
 });
