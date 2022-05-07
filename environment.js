@@ -4,7 +4,7 @@ const env = {
     FRONT_URL: 'http://localhost:4200',
     PORT: 3000,
 
-    riot_token:`RGAPI-0a9181f9-2178-4698-9246-b1a16b4eefcc`,
+    riot_token:`RGAPI-991867d0-7892-4f17-9c1e-052807377016`,
 
     version_lol:'https://ddragon.leagueoflegends.com/api/versions.json',
     summoner_data: `https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-name/`,
@@ -19,6 +19,16 @@ const env = {
     champ: `http://ddragon.leagueoflegends.com/cdn/${actual_version}/data/es_MX/champion/`,
     items:`http://ddragon.leagueoflegends.com/cdn/${actual_version}/data/es_MX/item.json`,
     summoner_spell:`http://ddragon.leagueoflegends.com/cdn/${actual_version}/data/es_MX/summoner.json`,
-    profile_icon:`http://ddragon.leagueoflegends.com/cdn/${actual_version}/data/es_MX/profileicon.json`
+    runes_perk:`http://ddragon.leagueoflegends.com/cdn/${actual_version}/data/es_MX/runesReforged.json`,
+    profile_icon:`http://ddragon.leagueoflegends.com/cdn/${actual_version}/data/es_MX/profileicon.json`,
+//---------------------------------------------------------------------------------------------------------------------
+    img_splash:`http://ddragon.leagueoflegends.com/cdn/img/champion/splash/`,
+    img_loading:`http://ddragon.leagueoflegends.com/cdn/img/champion/loading/`,
+    img_champ:`http://ddragon.leagueoflegends.com/cdn/${actual_version}/img/champion/`,
+    img_passive:`http://ddragon.leagueoflegends.com/cdn/${actual_version}/img/passive/`,
+    img_spell:`http://ddragon.leagueoflegends.com/cdn/${actual_version}/img/spell/`,
+    img_item:`http://ddragon.leagueoflegends.com/cdn/${actual_version}/img/item/`,
+    img_summoner_spell:`http://ddragon.leagueoflegends.com/cdn/${actual_version}/img/spell/`,
+    img_profile_icon:`http://ddragon.leagueoflegends.com/cdn/${actual_version}/img/profileicon/`,
 }
 module.exports = env;
