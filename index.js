@@ -14,11 +14,9 @@ const header = {
     }
 };
 
-const fromDb = undefined;
-
 let items;
 let champions;
-let summoner_spells = fromDb || {};
+let summoner_spells = {} || undefined;
 let runes_perks;
 
 // Get all items
