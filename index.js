@@ -55,7 +55,7 @@ request(
         if (error) {
             console.log(error);
         } else {
-            for (const spell in body.data){
+            for (const spell in body.data) {
                 // console.log(body.data[spell].key.toString());
                 summoner_spells[body.data[spell].key] = body.data[spell];
             };
@@ -211,7 +211,7 @@ app.get('/match/:id', function (req, res) {
                 summoner.item4 = items.data[summoner.item4];
                 summoner.item5 = items.data[summoner.item5];
                 summoner.item6 = items.data[summoner.item6];
-                
+
                 summoner.summoner1Info = summoner_spells[summoner.summoner1Id];
                 summoner.summoner2Info = summoner_spells[summoner.summoner2Id];
 
