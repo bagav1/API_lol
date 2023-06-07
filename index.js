@@ -364,5 +364,5 @@ app.get('/profile_icon', function (req, res) {
 // ----------------------------------------------------------------
 
 app.listen(env.PORT, () => {
-    console.log(`>> El servidor está inicializado en el host http://localhost:${env.PORT}`);
+    console.log(`>>> El servidor está inicializado en el host http://localhost:${env.PORT}`);
 });
